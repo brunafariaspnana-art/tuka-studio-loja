@@ -1,0 +1,22 @@
+name: Extrair loja
+on:
+  push:
+    paths: [".github/workflows/extrair.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  extrair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descompactar e organizar
+        run: |
+          unzip -o tuka-studio-loja.zip -d _tmp
+          cp -r _tmp/tuka-studio-loja/. .
+          rm -rf _tmp tuka-studio-loja.zip
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Extrai os arquivos da loja"
+          git push
